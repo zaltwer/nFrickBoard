@@ -1,0 +1,14 @@
+﻿<Window x:Class="nFrickBoard.nSetting"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="nSetting" Height="402.688" Width="782.461">
+    <Grid>
+        <ListBox HorizontalAlignment="Left" Height="204" Margin="10,10,0,0" VerticalAlignment="Top" Width="399"/>
+        <DataGrid HorizontalAlignment="Left" Height="192" Margin="460,22,0,0" VerticalAlignment="Top" Width="241">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="100"/>
+                <DataGridCheckBoxColumn Width="50"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

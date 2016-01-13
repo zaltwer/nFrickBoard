@@ -1,0 +1,57 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:nFrickBoard" x:Class="nFrickBoard.FrickPad" 
+             mc:Ignorable="d" 
+             d:DesignHeight="128" d:DesignWidth="128">
+    <Grid>
+        <Grid.Resources>
+            <GeometryGroup x:Key="PadClip2">
+                <EllipseGeometry 
+				RadiusX="64"
+				RadiusY="64"
+				Center="64,64"/>
+                <EllipseGeometry 
+				RadiusX="32"
+				RadiusY="32"
+				Center="64,64"/>
+            </GeometryGroup>
+            <EllipseGeometry x:Key="ButtonClip"
+				RadiusX="32"
+				RadiusY="32"
+				Center="32,32"/>
+            <EllipseGeometry x:Key="TextClip"
+				RadiusX="31"
+				RadiusY="31"
+				Center="32,32"/>
+            <EllipseGeometry x:Key="PadClip"
+				RadiusX="64"
+				RadiusY="64"
+				Center="64,64"/>
+        </Grid.Resources>
+        <Ellipse UseLayoutRounding="True" Width="128" Height="128" StrokeThickness="3" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Ellipse.Stroke>
+                <SolidColorBrush Color="Black" Opacity="0.3"/>
+            </Ellipse.Stroke>
+
+        </Ellipse>
+        <Ellipse UseLayoutRounding="True" Width="64" Height="64" StrokeThickness="1" Margin="32,32,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Ellipse.Stroke>
+                <SolidColorBrush Color="Black" Opacity="0.3"/>
+            </Ellipse.Stroke>
+
+        </Ellipse>
+        <Image 
+			x:Name="PadImg"
+			HorizontalAlignment="Left" Height="128" VerticalAlignment="Top" Width="128"
+			Clip="{StaticResource PadClip2}"
+			Source="Resources/PadBase.bmp"
+			Stylus.IsPressAndHoldEnabled="false" Opacity="0.5"
+            />
+        <local:FrickButton x:Name="PadBtn" HorizontalAlignment="Left" Margin="32,32,0,0" VerticalAlignment="Top"
+                           Clip="{StaticResource TextClip}"/>
+
+    </Grid>
+</UserControl>
