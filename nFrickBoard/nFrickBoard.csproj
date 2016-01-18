@@ -78,6 +78,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -99,6 +100,7 @@
     <Compile Include="CfgWindow.xaml.cs">
       <DependentUpon>CfgWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Constants.cs" />
     <Compile Include="FrickButton.xaml.cs">
       <DependentUpon>FrickButton.xaml</DependentUpon>
     </Compile>
@@ -111,6 +113,7 @@
     <Compile Include="FrickPad.xaml.cs">
       <DependentUpon>FrickPad.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserSettings.cs" />
     <Page Include="CfgWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

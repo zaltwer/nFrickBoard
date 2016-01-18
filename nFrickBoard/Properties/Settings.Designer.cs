@@ -225,18 +225,6 @@ namespace nFrickBoard.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int PadCnt {
-            get {
-                return ((int)(this["PadCnt"]));
-            }
-            set {
-                this["PadCnt"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("20")]
         public int FrickRange {
             get {
@@ -583,6 +571,18 @@ b.n59=0|b.n6=0|b.n60=1.29062024949075E-306|b.n61=4.24391670529379E-314|b.n8=é€šå
             }
             set {
                 this["brsPrm"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int PadCnt {
+            get {
+                return ((int)(this["PadCnt"]));
+            }
+            set {
+                this["PadCnt"] = value;
             }
         }
     }

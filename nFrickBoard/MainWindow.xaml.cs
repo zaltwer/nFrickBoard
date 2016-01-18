@@ -228,6 +228,16 @@ namespace nFrickBoard
             }
             SetKey.SetKeyCD(PadArray, Properties.Settings.Default.padCDNP, PadCnt, Key_txt, List_txt);
             #endregion
+#if true
+            //猫ペイント本体ディレクトリ
+            UserSettings.Instance.NpDir = NpDir;
+            //割り当て済みショートカット管理リスト
+            //KEY：ID　VAL：ショートカット
+            UserSettings.Instance.Key_txt = Key_txt;
+            //割り当て済みスクリプト管理リスト
+            //KEY：スクリプト名　VAL：ショートカットID
+            UserSettings.Instance.List_txt = List_txt;
+#endif
         }
         //ウインドウメッセージ処理
         IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)

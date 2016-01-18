@@ -31,7 +31,7 @@ namespace nFrickBoard
                 DirectoryInfo dirChk = new DirectoryInfo(Dir);
                 if (dirChk.Exists == true)
                 {
-                    var aaa = dirChk.GetFiles("npaint_script.exe");
+                    var aaa = dirChk.GetFiles(Constants.NPExeName);
                     if (aaa.Length == 0)
                     {
                         MessageBox.Show("ネコペイント本体が見つかりません。\nネコペイント本体の場所を指定して下さい", "警告");
@@ -103,7 +103,7 @@ namespace nFrickBoard
             try
             {
                 // シフトJISのファイルの読み込み
-                string[] lines1 = File.ReadAllLines(NpDir + "\\config\\key.txt",
+                string[] lines1 = File.ReadAllLines(NpDir + Constants.NPKeyPath,
                     System.Text.Encoding.GetEncoding("Shift_JIS"));
                 foreach (string line in lines1)
                 {
@@ -236,7 +236,7 @@ namespace nFrickBoard
             try
             {
                 //ファイルにテキストを書き出し
-                using (StreamWriter w = new StreamWriter(NpDir + "/config/key.txt"
+                using (StreamWriter w = new StreamWriter(NpDir + Constants.NPKeyPath
                     , false, System.Text.Encoding.GetEncoding("Shift_JIS")))
                 {
                     foreach (var tmp in KL)

@@ -164,9 +164,6 @@
     <Setting Name="ButtonCnt" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
-    <Setting Name="PadCnt" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
-    </Setting>
     <Setting Name="FrickRange" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">20</Value>
     </Setting>
@@ -519,6 +516,9 @@ b.n54=0|b.n55=0|b.n56=0|b.n57=0|b.n58=0
 b.n59=0|b.n6=0|b.n60=1.29062024949075E-306|b.n61=4.24391670529379E-314|b.n8=通常
 "b.texture_file=|b.texture_folder=|b.tool="
 </Value>
+    </Setting>
+    <Setting Name="PadCnt" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
 </SettingsFile>
