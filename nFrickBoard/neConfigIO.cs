@@ -11,61 +11,6 @@ namespace nFrickBoard
     class neConfigIO
     {
 
-        /// <summary>
-        /// ネコペのディレクトリを取得
-        /// 初回起動時や存在しない場合入力させる
-        /// </summary>
-        /// <param name="Dir"></param>
-        public string GetNpDir()
-        {
-            bool ChkFlg = true;
-            string  Dir = Properties.Settings.Default.npDir;
-            if (Dir == "")
-            {
-                //初回起動時
-                MessageBox.Show("ネコペイント本体の場所を指定してください","起動時設定");
-                ChkFlg = false;
-            }
-            else
-            {
-                DirectoryInfo dirChk = new DirectoryInfo(Dir);
-                if (dirChk.Exists == true)
-                {
-                    var aaa = dirChk.GetFiles(Constants.NPExeName);
-                    if (aaa.Length == 0)
-                    {
-                        MessageBox.Show("ネコペイント本体が見つかりません。\nネコペイント本体の場所を指定して下さい", "警告");
-                        ChkFlg = false;
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("ネコペイント本体が見つかりません。\nネコペイント本体の場所を指定して下さい", "警告");
-                    ChkFlg = false;
-                }
-            }
-            if (ChkFlg == false)
-            {
-                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-                dlg.FileName = "";
-                dlg.Filter = "npaint_script.exe|npaint_script.exe";
-                dlg.Title = "ネコペイント本体の場所を指定して下さい";
-
-                Nullable<bool> result = dlg.ShowDialog();
-                if (result == true)
-                {
-                    // Open document
-                    Dir = Path.GetDirectoryName(dlg.FileName);
-                    Properties.Settings.Default.npDir = Dir;
-                    Properties.Settings.Default.Save();
-                }
-                else
-                {
-                    Dir = "";
-                }
-            }
-            return (Dir);
-        }
         
         /// <summary>
         /// アプリケーション設定からショートカットキー全定義取得
@@ -103,7 +48,7 @@ namespace nFrickBoard
             try
             {
                 // シフトJISのファイルの読み込み
-                string[] lines1 = File.ReadAllLines(NpDir + Constants.NPKeyPath,
+                string[] lines1 = File.ReadAllLines(NpDir + Constants.NP_KEY_PATH,
                     System.Text.Encoding.GetEncoding("Shift_JIS"));
                 foreach (string line in lines1)
                 {
@@ -236,7 +181,7 @@ namespace nFrickBoard
             try
             {
                 //ファイルにテキストを書き出し
-                using (StreamWriter w = new StreamWriter(NpDir + Constants.NPKeyPath
+                using (StreamWriter w = new StreamWriter(NpDir + Constants.NP_KEY_PATH
                     , false, System.Text.Encoding.GetEncoding("Shift_JIS")))
                 {
                     foreach (var tmp in KL)

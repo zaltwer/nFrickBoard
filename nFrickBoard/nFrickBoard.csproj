@@ -106,9 +106,6 @@
     </Compile>
     <Compile Include="KeyConfigData.cs" />
     <Compile Include="neConfigIO.cs" />
-    <Compile Include="nSetting.xaml.cs">
-      <DependentUpon>nSetting.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="FrickPad.xaml.cs">
       <DependentUpon>FrickPad.xaml</DependentUpon>
@@ -134,10 +131,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="nSetting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="FrickPad.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

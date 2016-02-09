@@ -53,54 +53,16 @@ namespace nFrickBoard
                 System.Windows.Forms.Application.Restart();
                 System.Windows.Application.Current.Shutdown();
 #endif
-#if false
-            testclass[] writeclass = new testclass[ButtonArray.Length];
-            foreach (FrickButton btn in ButtonArray)
-            {
-                writeclass[cnt] = new testclass();
-                writeclass[cnt].ID = btn.ID;
-                writeclass[cnt].KeyAssign = btn.KeyAssign;
-                cnt++;
-            }
 
-#else
-//                testclass writeclass = new testclass();
-            UserSettings.LoadSetting();
-            UserSettings.Instance.test += "a";
-            UserSettings.Instance.ID = ButtonArray[0].ID;
-            UserSettings.Instance.KeyAssign = ButtonArray[0].KeyAssign;
+//            UserSettings.Instance.ID = ButtonArray[0].ID;
+//            UserSettings.Instance.KeyAssign = ButtonArray[0].KeyAssign;
             UserSettings.SaveSetting();
-            //シリアル化して書き込む
-//                writeclass.save();
-            
-#endif
             this.Close();
         }
 
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }
-    }
-    public class testclass
-    {
-        //識別番号
-        public int ID { get; set; }
-        //キー割り当て
-        public int[][] KeyAssign { get; set; }
-
-        public testclass()
-        {
-        }
-
-        public void save()
-        {
-            string appPath = System.Windows.Forms.Application.StartupPath;
-            appPath += @"\test.config";
-            StreamWriter sw = new StreamWriter(appPath);
-            XmlSerializer xs = new XmlSerializer(typeof(testclass));
-            //シリアル化して書き込む
-            xs.Serialize(sw, this);
         }
     }
 }

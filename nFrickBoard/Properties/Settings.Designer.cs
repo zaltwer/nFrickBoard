@@ -56,7 +56,7 @@ namespace nFrickBoard.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
@@ -70,50 +70,9 @@ namespace nFrickBoard.Properties {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["padStr"]));
             }
-            set {
-                this["padStr"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string />
-  <string>Ctrl + Alt + Shift + 1 </string>
-  <string>Ctrl + Alt + Shift + 3</string>
-  <string>Ctrl + Alt + Shift + 5 </string>
-  <string>Ctrl + Alt + Shift + 7</string>
-</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection padCD {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["padCD"]));
-            }
-            set {
-                this["padCD"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string />
-  <string>Ctrl + Alt + Shift + 2</string>
-  <string>Ctrl + Alt + Shift + 4</string>
-  <string>Ctrl + Alt + Shift + 6</string>
-  <string>Ctrl + Alt + Shift + 8</string>
-</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection padCDR {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["padCDR"]));
-            }
-            set {
-                this["padCDR"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
@@ -147,12 +106,9 @@ namespace nFrickBoard.Properties {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["KeyStr"]));
             }
-            set {
-                this["KeyStr"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
@@ -186,12 +142,9 @@ namespace nFrickBoard.Properties {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["KeyCD"]));
             }
-            set {
-                this["KeyCD"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
@@ -206,60 +159,32 @@ namespace nFrickBoard.Properties {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["BtnTXT"]));
             }
-            set {
-                this["BtnTXT"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public int ButtonCnt {
             get {
                 return ((int)(this["ButtonCnt"]));
             }
-            set {
-                this["ButtonCnt"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("20")]
         public int FrickRange {
             get {
                 return ((int)(this["FrickRange"]));
             }
-            set {
-                this["FrickRange"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("128")]
-        public int CancelRange {
+        public int FrickCancel {
             get {
-                return ((int)(this["CancelRange"]));
-            }
-            set {
-                this["CancelRange"] = value;
-            }
-        }
-        
-        /// <summary>
-        /// nekopaint本体ディレクトリ
-        /// </summary>
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsDescriptionAttribute("nekopaint本体ディレクトリ")]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string npDir {
-            get {
-                return ((string)(this["npDir"]));
-            }
-            set {
-                this["npDir"] = value;
+                return ((int)(this["FrickCancel"]));
             }
         }
         
@@ -398,7 +323,7 @@ namespace nFrickBoard.Properties {
         /// <summary>
         /// 修飾キーボタンのポップアップに表示する文字列
         /// </summary>
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Configuration.SettingsDescriptionAttribute("修飾キーボタンのポップアップに表示する文字列")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
@@ -413,15 +338,12 @@ namespace nFrickBoard.Properties {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["ModStr"]));
             }
-            set {
-                this["ModStr"] = value;
-            }
         }
         
         /// <summary>
         /// 修飾キーボタンキー割り当て
         /// </summary>
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Configuration.SettingsDescriptionAttribute("修飾キーボタンキー割り当て")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
@@ -436,15 +358,12 @@ namespace nFrickBoard.Properties {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["ModCD"]));
             }
-            set {
-                this["ModCD"] = value;
-            }
         }
         
         /// <summary>
         /// ネコペのショートカット番号でのキー割り当て(5個1セット)
         /// </summary>
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Configuration.SettingsDescriptionAttribute("ネコペのショートカット番号でのキー割り当て(5個1セット)")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
@@ -479,15 +398,12 @@ namespace nFrickBoard.Properties {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["KeyCDNP"]));
             }
-            set {
-                this["KeyCDNP"] = value;
-            }
         }
         
         /// <summary>
         /// マクロ名によるホイール機能割当
         /// </summary>
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Configuration.SettingsDescriptionAttribute("マクロ名によるホイール機能割当")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
@@ -507,47 +423,9 @@ namespace nFrickBoard.Properties {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["padCDNP"]));
             }
-            set {
-                this["padCDNP"] = value;
-            }
         }
         
-        /// <summary>
-        /// マクロ名によるホイール機能割当(逆回転)
-        /// </summary>
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsDescriptionAttribute("マクロ名によるホイール機能割当(逆回転)")]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string />
-  <string>nFrick.nas bprm_down2</string>
-  <string>nFrick.nas bprm_down1</string>
-  <string>nFrick.nas bprm_down48</string>
-  <string>nFrick.nas nl_opa_down</string>
-</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection padCDNPR {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["padCDNPR"]));
-            }
-            set {
-                this["padCDNPR"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsUpgrade {
-            get {
-                return ((bool)(this["IsUpgrade"]));
-            }
-            set {
-                this["IsUpgrade"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"b.bitmap_file=円3
 b.bitmap_folder=|b.color=|b.layer=|b.n1=1.17994864883731|b.n10=1
@@ -569,20 +447,14 @@ b.n59=0|b.n6=0|b.n60=1.29062024949075E-306|b.n61=4.24391670529379E-314|b.n8=通�
             get {
                 return ((string)(this["brsPrm"]));
             }
-            set {
-                this["brsPrm"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public int PadCnt {
             get {
                 return ((int)(this["PadCnt"]));
-            }
-            set {
-                this["PadCnt"] = value;
             }
         }
     }

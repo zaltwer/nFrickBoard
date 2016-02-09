@@ -60,7 +60,7 @@
   &lt;string&gt;^ DE&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="padStr" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="padStr" Type="System.Collections.Specialized.StringCollection" Scope="Application">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;ホイール&lt;/string&gt;
@@ -70,27 +70,7 @@
   &lt;string&gt;レイヤー不透明度&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="padCD" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;string /&gt;
-  &lt;string&gt;Ctrl + Alt + Shift + 1 &lt;/string&gt;
-  &lt;string&gt;Ctrl + Alt + Shift + 3&lt;/string&gt;
-  &lt;string&gt;Ctrl + Alt + Shift + 5 &lt;/string&gt;
-  &lt;string&gt;Ctrl + Alt + Shift + 7&lt;/string&gt;
-&lt;/ArrayOfString&gt;</Value>
-    </Setting>
-    <Setting Name="padCDR" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;string /&gt;
-  &lt;string&gt;Ctrl + Alt + Shift + 2&lt;/string&gt;
-  &lt;string&gt;Ctrl + Alt + Shift + 4&lt;/string&gt;
-  &lt;string&gt;Ctrl + Alt + Shift + 6&lt;/string&gt;
-  &lt;string&gt;Ctrl + Alt + Shift + 8&lt;/string&gt;
-&lt;/ArrayOfString&gt;</Value>
-    </Setting>
-    <Setting Name="KeyStr" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="KeyStr" Type="System.Collections.Specialized.StringCollection" Scope="Application">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;取り消し&lt;/string&gt;
@@ -120,7 +100,7 @@
   &lt;string&gt;レイヤーを複製&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="KeyCD" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="KeyCD" Type="System.Collections.Specialized.StringCollection" Scope="Application">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;Ctrl + Z &lt;/string&gt;
@@ -150,7 +130,7 @@
   &lt;string&gt;Ctrl + J &lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="BtnTXT" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="BtnTXT" Type="System.Collections.Specialized.StringCollection" Scope="Application">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;編集&lt;/string&gt;
@@ -161,17 +141,14 @@
   &lt;string&gt;修飾キー&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="ButtonCnt" Type="System.Int32" Scope="User">
+    <Setting Name="ButtonCnt" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">5</Value>
     </Setting>
-    <Setting Name="FrickRange" Type="System.Int32" Scope="User">
+    <Setting Name="FrickRange" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">20</Value>
     </Setting>
-    <Setting Name="CancelRange" Type="System.Int32" Scope="User">
+    <Setting Name="FrickCancel" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">128</Value>
-    </Setting>
-    <Setting Name="npDir" Description="nekopaint本体ディレクトリ" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="AllKeyDef" Description="nekopaint全ショートカット" Type="System.Collections.Specialized.StringCollection" Scope="Application">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
@@ -421,7 +398,7 @@
   &lt;string&gt;α 4324 SSE2を使用する&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="ModStr" Description="修飾キーボタンのポップアップに表示する文字列" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="ModStr" Description="修飾キーボタンのポップアップに表示する文字列" Type="System.Collections.Specialized.StringCollection" Scope="Application">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;リセット&lt;/string&gt;
@@ -431,7 +408,7 @@
   &lt;string&gt;Space&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="ModCD" Description="修飾キーボタンキー割り当て" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="ModCD" Description="修飾キーボタンキー割り当て" Type="System.Collections.Specialized.StringCollection" Scope="Application">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string /&gt;
@@ -441,7 +418,7 @@
   &lt;string&gt;Space&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="KeyCDNP" Description="ネコペのショートカット番号でのキー割り当て(5個1セット)" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="KeyCDNP" Description="ネコペのショートカット番号でのキー割り当て(5個1セット)" Type="System.Collections.Specialized.StringCollection" Scope="Application">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;769&lt;/string&gt;
@@ -471,7 +448,7 @@
   &lt;string&gt;1282&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="padCDNP" Description="マクロ名によるホイール機能割当" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="padCDNP" Description="マクロ名によるホイール機能割当" Type="System.Collections.Specialized.StringCollection" Scope="Application">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string /&gt;
@@ -486,20 +463,7 @@
   &lt;string&gt;nFrick.nas nl_opa_down&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="padCDNPR" Description="マクロ名によるホイール機能割当(逆回転)" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;string /&gt;
-  &lt;string&gt;nFrick.nas bprm_down2&lt;/string&gt;
-  &lt;string&gt;nFrick.nas bprm_down1&lt;/string&gt;
-  &lt;string&gt;nFrick.nas bprm_down48&lt;/string&gt;
-  &lt;string&gt;nFrick.nas nl_opa_down&lt;/string&gt;
-&lt;/ArrayOfString&gt;</Value>
-    </Setting>
-    <Setting Name="IsUpgrade" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="brsPrm" Type="System.String" Scope="User">
+    <Setting Name="brsPrm" Type="System.String" Scope="Application">
       <Value Profile="(Default)">b.bitmap_file=円3
 b.bitmap_folder=|b.color=|b.layer=|b.n1=1.17994864883731|b.n10=1
 b.n100=|b.n11=1|b.n12=1|b.n13=0|b.n14=0
@@ -517,7 +481,7 @@ b.n59=0|b.n6=0|b.n60=1.29062024949075E-306|b.n61=4.24391670529379E-314|b.n8=通�
 "b.texture_file=|b.texture_folder=|b.tool="
 </Value>
     </Setting>
-    <Setting Name="PadCnt" Type="System.Int32" Scope="User">
+    <Setting Name="PadCnt" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>

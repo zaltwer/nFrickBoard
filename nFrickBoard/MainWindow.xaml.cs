@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using System.Windows.Controls.Primitives;
+using System.IO;
 
 namespace nFrickBoard
 {
@@ -46,9 +47,6 @@ namespace nFrickBoard
         [DllImport("Imm32.dll")]
         public static extern IntPtr ImmGetDefaultIMEWnd(IntPtr hWnd);
 
-        //キー設定取得用
-        private NameValueCollection NekoKeyDef = new NameValueCollection();
-
         //タッチ開始座標
         private double StartPointX;
         private double StartPointY;
@@ -58,10 +56,6 @@ namespace nFrickBoard
         private double PadPointY;
         private bool PadActivate = false;
 
-        //フリック判定範囲
-        private int FrickRange;
-        private int FrickCancel;
-
         //フリック時に表示するポップアップ用画像設定
         BitmapImage PopImageC = new BitmapImage(new Uri("Resources/maskb.png", UriKind.RelativeOrAbsolute));
         BitmapImage PopImageU = new BitmapImage(new Uri("Resources/maskU.png", UriKind.RelativeOrAbsolute));
@@ -70,9 +64,10 @@ namespace nFrickBoard
         BitmapImage PopImageR = new BitmapImage(new Uri("Resources/maskR.png", UriKind.RelativeOrAbsolute));
         BitmapImage PopImageCancel = new BitmapImage(new Uri("Resources/maskCancel.png", UriKind.RelativeOrAbsolute));
 
-        //コントロール件数
-        int ButtonCnt;
-        int PadCnt;
+        BitmapImage testimage = new BitmapImage(new Uri("Resources/NoAssign.png", UriKind.RelativeOrAbsolute));
+        ImageBrush masc;
+
+
         //コントロール配列
         FrickButton[] ButtonArray;
         FrickPad[] PadArray;
@@ -90,6 +85,7 @@ namespace nFrickBoard
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
+#if false //アップグレードチェック
             // 前バージョンからのUpgradeを実行していないときは、Upgradeを実施する
             if (Properties.Settings.Default.IsUpgrade == false)
             {
@@ -102,16 +98,20 @@ namespace nFrickBoard
                 // 現行バージョンの設定を保存する
                 Properties.Settings.Default.Save();
             }
+#endif
             //ブラシ設定てすとーーーーーーーーーーーーーーーーーーーー
 //            var brsprm = Properties.Settings.Default.brsPrm;
 //            Clipboard.SetDataObject(brsprm);
 
+            masc = new ImageBrush(testimage);
+            //ユーザー設定ファイルロード
+            UserSettings.LoadSetting();
+
             KeyConfig SetKey = new KeyConfig(); 
 
-            //IO系クラス
+            //ネコペイント関連IO系クラス
             neConfigIO necIO = new neConfigIO();
-            //猫ペイント本体ディレクトリ
-            string NpDir = "";
+
             //割り当て済みショートカット管理リスト
             //KEY：ID　VAL：ショートカット
             Dictionary<int, string> Key_txt = new Dictionary<int, string>();
@@ -127,9 +127,6 @@ namespace nFrickBoard
             HwndSource source = HwndSource.FromHwnd(helper.Handle);
             source.AddHook(new HwndSourceHook(WndProc));
 
-            //フリック範囲取得
-            FrickRange = Properties.Settings.Default.FrickRange;
-            FrickCancel = Properties.Settings.Default.CancelRange;
             #region 起動時チェックなど
             //二重起動確認
             var name = this.GetType().Assembly.GetName().Name;
@@ -139,32 +136,80 @@ namespace nFrickBoard
                 MessageBox.Show("二重起動はできません", "エラー");
                 Close();
                 return;
-            }            //起動ディレクトリ設定
-#if true
-            NpDir = necIO.GetNpDir();
-            if (NpDir == "")
+            }
+            #endregion
+            #region 各種ユーザー設定取得
+            //ネコペイント本体のディレクトリ取得
+            GetNpDir();
+            if (UserSettings.Instance.NpDir == "")
             {
                 MessageBox.Show("ネコペイント本体が見つかりません。NekoFrickを終了します", "エラー");
                 Close();
                 return;
             }
-#endif
-            #endregion
-            //ネコペkey.txt取得
-            necIO.ReadKey_txt(NpDir, Key_txt);
-            //スクリプトリスト取得
-            necIO.ReadScriptList(NpDir, "user_list.txt", Key_txt, List_txt);
-            necIO.ReadScriptList(NpDir, "list.txt", Key_txt, List_txt);
-
-            #region //各ボタンの表示テキスト・キー割り当て設定
+            //フリック範囲取得
+            if (UserSettings.Instance.FrickRange == 0)
+            {
+                //0の場合デフォルト値を取得
+                UserSettings.Instance.FrickRange = Properties.Settings.Default.FrickRange;
+            }
+            if (UserSettings.Instance.FrickCancel == 0)
+            {
+                //0の場合デフォルト値を取得
+                UserSettings.Instance.FrickCancel = Properties.Settings.Default.FrickCancel;
+            }
             //ボタン数・ホイールパッド数取得
-            ButtonCnt = Properties.Settings.Default.ButtonCnt;
-            PadCnt = Properties.Settings.Default.PadCnt;
-            //通常ボタン配列作成
-            ButtonArray = new FrickButton[ButtonCnt];
+            if (UserSettings.Instance.ButtonCnt == 0 && UserSettings.Instance.PadCnt == 0)
+            {
+                //ボタン数、ホイール数ともに0の場合のみデフォルト値を取得
+                //ボタンは修飾キー用に＋1しておく
+                UserSettings.Instance.ButtonCnt = Properties.Settings.Default.ButtonCnt + 1;
+                UserSettings.Instance.PadCnt = Properties.Settings.Default.PadCnt;
+
+                #region ボタン設定のデフォルト値を取得
+                //ボタン数分ユーザー設定に配列確保
+                UserSettings.Instance.Button = new UserButton[UserSettings.Instance.ButtonCnt];
+                //最後の一件は修飾キー用のためボタン数－1ループ
+                int i;
+                for (i = 0; i < UserSettings.Instance.ButtonCnt - 1; i++)
+                {
+                    UserSettings.Instance.Button[i] = new UserButton();
+                    UserSettings.Instance.Button[i].BtnTxt = Properties.Settings.Default.BtnTXT[i];
+                    UserSettings.Instance.Button[i].ID = i;
+                    UserSettings.Instance.Button[i].kind = Constants.BTN_NORMAL;  //ボタン種類を通常に設定
+                    for (int j = 0; j < (Constants.FRICK_WAY + 1); j++)
+                    {
+                        UserSettings.Instance.Button[i].KeyText[j] = Properties.Settings.Default.KeyStr[i * (Constants.FRICK_WAY + 1) + j];
+                        UserSettings.Instance.Button[i].KeyAssign[j] = Properties.Settings.Default.KeyCDNP[i * (Constants.FRICK_WAY + 1) + j];
+                    }
+                }
+                //修飾キー追加
+                UserSettings.Instance.Button[i] = new UserButton();
+                UserSettings.Instance.Button[i].BtnTxt = Constants.MOD_TXT;
+                UserSettings.Instance.Button[i].ID = i;
+                UserSettings.Instance.Button[i].kind = Constants.BTN_MOD;  //ボタン種類を修飾キーに設定
+                for (int j = 0; j < (Constants.FRICK_WAY + 1); j++)
+                {
+                    UserSettings.Instance.Button[i].KeyText[j] = Properties.Settings.Default.ModStr[j];
+                    UserSettings.Instance.Button[i].KeyAssign[j] = Properties.Settings.Default.ModCD[j];
+                }
+                #endregion
+            }
+            #endregion
+
+            #region ネコペイント各種設定ファイル取得
+            //ネコペkey.txt取得（ショートカット割り当て済みの機能のみ）
+            necIO.ReadKey_txt(UserSettings.Instance.NpDir, Key_txt);
+            //スクリプトリスト取得
+            necIO.ReadScriptList(UserSettings.Instance.NpDir, Constants.NP_USER_LIST, Key_txt, List_txt);
+            necIO.ReadScriptList(UserSettings.Instance.NpDir, Constants.NP_SCRIPT_LIST, Key_txt, List_txt);
+            #endregion
+            #region //各ボタンの表示テキスト・キー割り当て設定
+            //ボタン配列作成
+            ButtonArray = new FrickButton[UserSettings.Instance.ButtonCnt];
             int X = 0;
             int Y = 0;
-            for (int i = 0; i < ButtonCnt; i++)
+            for (int i = 0; i < UserSettings.Instance.ButtonCnt; i++)
             {
                 //とりあえず仮で横方向ボタン三個で折り返し
                 if (i != 0 && i % 3 == 0)
@@ -172,19 +217,19 @@ namespace nFrickBoard
                     X = 0;
                     Y++;
                 }
+                //ボタン作成
                 ButtonArray[i] = new FrickButton();
                 FrickGrid.Children.Add(ButtonArray[i]);
-                ButtonArray[i].Margin = new Thickness(64 * X, Y * 64, 0, 0);
-
+                ButtonArray[i].Margin = new Thickness(X * Constants.ButtonSize, Y * Constants.ButtonSize, 0, 0);
+                //イベント設定
                 ButtonArray[i].StylusDown += FrickButton_StylusDown;
                 ButtonArray[i].MouseMove += FrickButton_MouseMove;
                 ButtonArray[i].MouseUp += FrickButton_MouseUp;
-                ButtonArray[i].BtnTxt.Text = Properties.Settings.Default.BtnTXT[i];
+                ButtonArray[i].BtnTxt.Text = UserSettings.Instance.Button[i].BtnTxt;
                 X++;
             }
-            SetKey.SetKeyText(ButtonArray, Properties.Settings.Default.KeyStr, ButtonCnt);
-//            SetKey.SetKeyCD(ButtonArray, Properties.Settings.Default.KeyCD, ButtonCnt);
-            SetKey.SetKeyCD(ButtonArray, Properties.Settings.Default.KeyCDNP, ButtonCnt, Key_txt);
+            //作成したボタンにショートカットを設定
+            SetKey.SetUserKey(ButtonArray, UserSettings.Instance, Key_txt);
 
             //修飾キー用ボタン作成
             ModButton = new FrickButton();
@@ -194,9 +239,10 @@ namespace nFrickBoard
             ModButton.BtnImg.Source = ModBmp;
             ModButton.StylusDown += FrickButton_StylusDown;
             ModButton.MouseMove += FrickButton_MouseMove;
-            ModButton.MouseUp += FrickButton_MouseUp;
+            //マウスアップイベントは修飾キー用を設定
+            ModButton.MouseUp += FrickButtonMod_MouseUp;
             ModButton.ModFlg = true;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < Constants.FRICK_WAY + 1; i++)
             {
                 //修飾キーに未設定はないためポップアップは無条件で白背景に
                 ModButton.PopText[i].Background = new SolidColorBrush(Colors.White);
@@ -204,9 +250,10 @@ namespace nFrickBoard
 
             SetKey.SetKeyText(ModButton, Properties.Settings.Default.ModStr);
             SetKey.SetModKeyCD(ModButton.KeyAssign, Properties.Settings.Default.ModCD);
+
             //ホイールパッド配列作成
-            PadArray = new FrickPad[PadCnt];
-            for (int i = 0; i < PadCnt; i++)
+            PadArray = new FrickPad[UserSettings.Instance.PadCnt];
+            for (int i = 0; i < UserSettings.Instance.PadCnt; i++)
             {
                 PadArray[i] = new FrickPad();
                 FrickGrid.Children.Add(PadArray[i]);
@@ -226,18 +273,8 @@ namespace nFrickBoard
 //                SetKey.SetKeyCD(PadArray[i].KeyAsignR, Properties.Settings.Default.padCDR);
                 PadArray[i].PadBtn.BtnTxt.Text = PadArray[i].PadBtn.PopTextC.Text;
             }
-            SetKey.SetKeyCD(PadArray, Properties.Settings.Default.padCDNP, PadCnt, Key_txt, List_txt);
+            SetKey.SetKeyCD(PadArray, Properties.Settings.Default.padCDNP, UserSettings.Instance.PadCnt, Key_txt, List_txt);
             #endregion
-#if true
-            //猫ペイント本体ディレクトリ
-            UserSettings.Instance.NpDir = NpDir;
-            //割り当て済みショートカット管理リスト
-            //KEY：ID　VAL：ショートカット
-            UserSettings.Instance.Key_txt = Key_txt;
-            //割り当て済みスクリプト管理リスト
-            //KEY：スクリプト名　VAL：ショートカットID
-            UserSettings.Instance.List_txt = List_txt;
-#endif
         }
         //ウインドウメッセージ処理
         IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -414,6 +451,7 @@ namespace nFrickBoard
             StartPointX = pos.X;
             StartPointY = pos.Y;
             TargetButton.FrickPopImage.Source = PopImageC;
+            TargetButton.PopTextC.Background = new SolidColorBrush(Colors.Yellow);
 
             TargetButton.FrickPop.IsOpen = true;
         }
@@ -434,11 +472,11 @@ namespace nFrickBoard
                 difY = StartPointY - pos.Y;
                 if (System.Math.Abs(difX) < System.Math.Abs(difY))
                 {
-                    if (System.Math.Abs(difY) < FrickRange)
+                    if (System.Math.Abs(difY) < UserSettings.Instance.FrickRange)
                     {
                         target.FrickPopImage.Source = PopImageC;
                     }
-                    else if (System.Math.Abs(difY) > FrickCancel)
+                    else if (System.Math.Abs(difY) > UserSettings.Instance.FrickCancel)
                     {
                         //キャンセル
                         target.FrickPopImage.Source = PopImageCancel;
@@ -454,11 +492,11 @@ namespace nFrickBoard
                 }
                 else
                 {
-                    if (System.Math.Abs(difX) < FrickRange)
+                    if (System.Math.Abs(difX) < UserSettings.Instance.FrickRange)
                     {
                         target.FrickPopImage.Source = PopImageC;
                     }
-                    else if (System.Math.Abs(difX) > FrickCancel)
+                    else if (System.Math.Abs(difX) > UserSettings.Instance.FrickCancel)
                     {
                         //キャンセル
                         target.FrickPopImage.Source = PopImageCancel;
@@ -477,6 +515,7 @@ namespace nFrickBoard
 
         /// <summary>
         /// フリック確定
+        /// 押下中の修飾キーを離してコマンド実行後元に戻す
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -498,46 +537,117 @@ namespace nFrickBoard
 
             if (System.Math.Abs(difX) < System.Math.Abs(difY))
             {
-                if (System.Math.Abs(difY) < FrickRange)
+                if (System.Math.Abs(difY) < UserSettings.Instance.FrickRange)
                 {
                     //フリックなし
-                    send.Sendkey(target.KeyAssign[0],target.ModFlg);
+                    send.Sendkey(target.KeyAssign[0]);
                 }
-                else if (System.Math.Abs(difY) > FrickCancel)
+                else if (System.Math.Abs(difY) > UserSettings.Instance.FrickCancel)
                 {
                     //処理なし
                 }
                 else if (difY > 0)
                 {
                     //上フリック
-                    send.Sendkey(target.KeyAssign[1], target.ModFlg);
+                    send.Sendkey(target.KeyAssign[1]);
                 }
                 else
                 {
                     //下フリック
-                    send.Sendkey(target.KeyAssign[2], target.ModFlg);
+                    send.Sendkey(target.KeyAssign[2]);
                 }
             }
             else
             {
-                if (System.Math.Abs(difX) < FrickRange)
+                if (System.Math.Abs(difX) < UserSettings.Instance.FrickRange)
                 {
                     //フリックなし
-                    send.Sendkey(target.KeyAssign[0], target.ModFlg);
+                    send.Sendkey(target.KeyAssign[0]);
                 }
-                else if (System.Math.Abs(difX) > FrickCancel)
+                else if (System.Math.Abs(difX) > UserSettings.Instance.FrickCancel)
                 {
                     //処理なし
                 }
                 else if (difX > 0)
                 {
                     //左フリック
-                    send.Sendkey(target.KeyAssign[3], target.ModFlg);
+                    send.Sendkey(target.KeyAssign[3]);
                 }
                 else
                 {
                     //右フリック
-                    send.Sendkey(target.KeyAssign[4], target.ModFlg);
+                    send.Sendkey(target.KeyAssign[4]);
+                }
+            }
+            Mouse.Capture(null);
+            //コマンド送信後ワンテンポ遅らせてポップアップを消す
+            System.Threading.Thread.Sleep(100);
+            target.FrickPop.IsOpen = false;
+        }
+        /// <summary>
+        /// フリック確定（修飾キー用）
+        /// 押下中の修飾キーをキャンセルしないメソッドを呼び出す
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FrickButtonMod_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var target = (FrickButton)sender;
+            double difX, difY;
+            SendKeyCode send = new SendKeyCode();
+            Point pos = e.GetPosition(target);
+            difX = StartPointX - pos.X;
+            difY = StartPointY - pos.Y;
+
+            // アクティブなウィンドウハンドルの取得
+            IntPtr hWnd = GetForegroundWindow();
+            //IMEハンドルの取得
+            IntPtr hIMC = ImmGetDefaultIMEWnd(hWnd);
+            //IMEをOFF
+            SendMessage(hIMC, WM_IME_CONTROL, IMC_SETOPENSTATUS, 0);
+
+            if (System.Math.Abs(difX) < System.Math.Abs(difY))
+            {
+                if (System.Math.Abs(difY) < UserSettings.Instance.FrickRange)
+                {
+                    //フリックなし
+                    send.SendModkey(target.KeyAssign[0]);
+                }
+                else if (System.Math.Abs(difY) > UserSettings.Instance.FrickCancel)
+                {
+                    //処理なし
+                }
+                else if (difY > 0)
+                {
+                    //上フリック
+                    send.SendModkey(target.KeyAssign[1]);
+                }
+                else
+                {
+                    //下フリック
+                    send.SendModkey(target.KeyAssign[2]);
+                }
+            }
+            else
+            {
+                if (System.Math.Abs(difX) < UserSettings.Instance.FrickRange)
+                {
+                    //フリックなし
+                    send.SendModkey(target.KeyAssign[0]);
+                }
+                else if (System.Math.Abs(difX) > UserSettings.Instance.FrickCancel)
+                {
+                    //処理なし
+                }
+                else if (difX > 0)
+                {
+                    //左フリック
+                    send.SendModkey(target.KeyAssign[3]);
+                }
+                else
+                {
+                    //右フリック
+                    send.SendModkey(target.KeyAssign[4]);
                 }
             }
             Mouse.Capture(null);
@@ -562,12 +672,12 @@ namespace nFrickBoard
 
             if (System.Math.Abs(difX) < System.Math.Abs(difY))
             {
-                if (System.Math.Abs(difY) < FrickRange)
+                if (System.Math.Abs(difY) < UserSettings.Instance.FrickRange)
                 {
                     //フリックなし
                     Pad.FuncID = 0;
                 }
-                else if (System.Math.Abs(difY) > FrickCancel)
+                else if (System.Math.Abs(difY) > UserSettings.Instance.FrickCancel)
                 {
                     //処理なし
                 }
@@ -584,12 +694,12 @@ namespace nFrickBoard
             }
             else
             {
-                if (System.Math.Abs(difX) < FrickRange)
+                if (System.Math.Abs(difX) < UserSettings.Instance.FrickRange)
                 {
                     //フリックなし
                     Pad.FuncID = 0;
                 }
-                else if (System.Math.Abs(difX) > FrickCancel)
+                else if (System.Math.Abs(difX) > UserSettings.Instance.FrickCancel)
                 {
                     //処理なし
                 }
@@ -684,7 +794,7 @@ namespace nFrickBoard
                     }
                     else
                     {
-                        send.Sendkey(target.PadBtn.KeyAssign[target.FuncID],false);
+                        send.Sendkey(target.PadBtn.KeyAssign[target.FuncID]);
                     }
                 }
                 if (ang < -target.sens[target.FuncID])
@@ -701,7 +811,7 @@ namespace nFrickBoard
                     }
                     else
                     {
-                        send.Sendkey(target.KeyAsignR[target.FuncID], false);
+                        send.Sendkey(target.KeyAsignR[target.FuncID]);
                     }
                 }
             }
@@ -722,9 +832,64 @@ namespace nFrickBoard
         }
 
         #endregion
+
+        /// <summary>
+        /// ネコペのディレクトリを取得
+        /// 初回起動時や存在しない場合入力させる
+        /// </summary>
+        /// <param name="Dir"></param>
+        public void GetNpDir()
+        {
+            bool ChkFlg = true;
+            string Dir = UserSettings.Instance.NpDir;
+            if (Dir == null || Dir == "")
+            {
+                //初回起動時
+                MessageBox.Show("ネコペイント本体の場所を指定してください", "起動時設定");
+                ChkFlg = false;
+            }
+            else
+            {
+                DirectoryInfo dirChk = new DirectoryInfo(Dir);
+                if (dirChk.Exists == true)
+                {
+                    var aaa = dirChk.GetFiles(Constants.NP_EXE_NAME);
+                    if (aaa.Length == 0)
+                    {
+                        MessageBox.Show("ネコペイント本体が見つかりません。\nネコペイント本体の場所を指定して下さい", "警告");
+                        ChkFlg = false;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("ネコペイント本体が見つかりません。\nネコペイント本体の場所を指定して下さい", "警告");
+                    ChkFlg = false;
+                }
+            }
+            if (ChkFlg == false)
+            {
+                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+                dlg.FileName = "";
+                dlg.Filter = "npaint_script.exe|npaint_script.exe";
+                dlg.Title = "ネコペイント本体の場所を指定して下さい";
+
+                Nullable<bool> result = dlg.ShowDialog();
+                if (result == true)
+                {
+                    // Open document
+                    UserSettings.Instance.NpDir = System.IO.Path.GetDirectoryName(dlg.FileName);
+                    UserSettings.SaveSetting();
+                }
+                else
+                {
+                    Dir = "";
+                }
+            }
+            return;
+        }
     }
 
-    //設定ファイルから色々取得
+    //ボタン設定処理いろいろ
     class KeyConfig
     {
         //キー定義
@@ -732,7 +897,7 @@ namespace nFrickBoard
 
         public KeyConfig()
         {
-            //キー定義取得
+            //アプリ設定からネコペのキー表記とキーコードの対応表を取得
             int div = 0;
             string key, val;
             foreach (string str in Properties.Settings.Default.KeyDef)
@@ -748,20 +913,102 @@ namespace nFrickBoard
             }
         }
 
+        //ユーザー設定から各ボタンのポップアップ、キー割り当てを設定
+        public void SetUserKey(FrickButton[] TargetButton, UserSettings UserKey, Dictionary<int, string> AllAssign)
+        {
+            for (int i = 0; i < UserKey.ButtonCnt; i++) //ボタン数ループ
+            {
+                for (int j = 0; j < (Constants.FRICK_WAY + 1); j++) //フリック数ループ
+                {
+                    //ポップアップ用テキスト設定
+                    TargetButton[i].PopText[j].Text = UserKey.Button[i].KeyText[j];
+                    //ネコペのショートカットIDから送信するキーコードを設定
+                    string[] Split;
+                    int[] KeyArray;
+                    int KeyCnt = 0;
+                    int ID;
+                    //キー割り当てが数値変換出来るか判定
+                    if (int.TryParse(UserKey.Button[i].KeyAssign[j], out ID))
+                    {
+                        //数値変換出来る場合はショートカットID指定とみなす
+                        //ネコペの割り当て済みショートカット一覧から該当するショートカットを検索
+                        if (!AllAssign.ContainsKey(ID))
+                        {
+                            //ショートカットが設定されていない場合テキストを赤表示にして次のキーに
+                            TargetButton[i].KeyAssign[j] = new int[0];
+                            SolidColorBrush brs = new SolidColorBrush(Colors.Red);
+                            TargetButton[i].PopText[j].Foreground = brs;
+                            continue;
+                        }
+                        TargetButton[i].PopText[j].Background = new SolidColorBrush(Colors.White);
+                        //割り当て済みショートカット一覧から該当するショートカットキーを取得
+                        string conv = AllAssign[ID];
+                        //入力を空白文字で分割
+                        Split = conv.Split();
+                        KeyArray = new int[Split.Length];
+                        //分割した文字列からショートカットキーの配列を生成
+                        foreach (string str in Split)
+                        {
+                            if (str.Length == 0)
+                            {
+                                continue;
+                            }
+                            else if (str.Length == 1)
+                            {
+                                if (str == "+")
+                                {
+                                    //単一の+は無視
+                                    continue;
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        //キー設定
+                                        KeyArray[KeyCnt] = Convert.ToByte(str[0]);
+                                    }
+                                    catch
+                                    {
+                                        //2byteとか特殊文字対策
+                                        //キー定義から検索して設定
+                                        KeyArray[KeyCnt] = Convert.ToByte(NekoKeyDef.Get(str), 16);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                //キー定義から検索して設定
+                                KeyArray[KeyCnt] = Convert.ToByte(NekoKeyDef.Get(str), 16);
+                            }
+                            KeyCnt++;
+                        }
+                        //ショートカットキーをボタンに登録
+                        TargetButton[i].KeyAssign[j] = new int[KeyCnt * 2];
+                        for (int k = 0; k < KeyCnt; k++)
+                        {
+                            TargetButton[i].KeyAssign[j][k] = KeyArray[k];
+                            //キーアップは逆順にマイナス値を設定
+                            TargetButton[i].KeyAssign[j][k + KeyCnt] = -KeyArray[KeyCnt - k - 1];
+                        }
+                    }
+                }
+            }
+        }
+
         //ポップアップに表示するテキスト設定
         public void SetKeyText(FrickButton[] TargetButton, StringCollection key_str, int Cnt)
         {
             for(int i = 0;i < Cnt;i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (int j = 0; j < (Constants.FRICK_WAY + 1); j++)
                 {
-                    TargetButton[i].PopText[j].Text = key_str[i * 5 + j];
+                    TargetButton[i].PopText[j].Text = key_str[i * (Constants.FRICK_WAY + 1) + j];
                 }
             }
         }
         public void SetKeyText(FrickButton TargetButton, StringCollection key_str)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < (Constants.FRICK_WAY + 1); i++)
             {
                 TargetButton.PopText[i].Text = key_str[i];
             }
@@ -770,7 +1017,7 @@ namespace nFrickBoard
         //各フリックに送信するキーコード設定
         public void SetKeyCD(int[][] KeyAsign, StringCollection key_str)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < (Constants.FRICK_WAY + 1); i++)
             {
                 string[] Split;
                 int[] KeyArray;
@@ -827,14 +1074,14 @@ namespace nFrickBoard
         {
             for (int m = 0; m < Cnt; m++)
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < (Constants.FRICK_WAY + 1); i++)
                 {
                     string[] Split;
                     int[] KeyArray;
                     int j = 0;
 
                     //入力を空白文字で分割
-                    Split = key_str[i + m * 5].Split();
+                    Split = key_str[i + m * (Constants.FRICK_WAY + 1)].Split();
                     KeyArray = new int[Split.Length];
                     foreach (string str in Split)
                     {
@@ -885,12 +1132,12 @@ namespace nFrickBoard
         {
             for (int m = 0; m < Cnt; m++)
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < (Constants.FRICK_WAY + 1); i++)
                 {
                     string[] Split;
                     int[] KeyArray;
                     int j = 0;
-                    int ID = Convert.ToInt16(key_str[i + m * 5]);
+                    int ID = Convert.ToInt16(key_str[i + m * (Constants.FRICK_WAY + 1)]);
                     if (!AllAssign.ContainsKey(ID))
                     {
                         //ショートカットが設定されていない場合
@@ -955,7 +1202,7 @@ namespace nFrickBoard
         {
             for (int m = 0; m < Cnt; m++)
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < (Constants.FRICK_WAY + 1); i++)
                 {
                     string[] Split, SplitR;
                     int[] KeyArray, KeyArrayR;
@@ -1099,7 +1346,7 @@ namespace nFrickBoard
             //合計キー件数
             int KeyCnt = 0;
             //0件目（センター）はキャンセル専用とするため1～4件目を処理する
-            for (int i = 1; i < 5; i++)
+            for (int i = 1; i < (Constants.FRICK_WAY + 1); i++)
             {
                 string[] Split;
                 int[] KeyArray;
@@ -1154,7 +1401,7 @@ namespace nFrickBoard
             KeyAsign[0] = new int[KeyCnt];
             int cnt = 0;
             //設定済みのキーのキーアップをセンターに設定
-            for (int i = 1; i < 5; i++)
+            for (int i = 1; i < (Constants.FRICK_WAY + 1); i++)
             {
                 foreach (int CD in KeyAsign[i])
                 {
@@ -1186,27 +1433,24 @@ namespace nFrickBoard
             keybd_event(Code, 0, 2, (UIntPtr)0);
         }
         //連続入力
-        public void Sendkey(int[] Code,bool ModFlg)
+        public void Sendkey(int[] Code)
         {
             bool ctrl = false, alt = false, shift = false;
             //修飾キー以外の場合押下中の修飾キーを解除し、最後に再押下する
-            if (ModFlg == false)
+            if (System.Windows.Input.Keyboard.Modifiers == ModifierKeys.Control)
             {
-                if (System.Windows.Input.Keyboard.Modifiers == ModifierKeys.Control)
-                {
-                    ctrl = true;
-                    keybd_event(VK_CONTROL, 0, 2, (UIntPtr)0);
-                }
-                if (System.Windows.Input.Keyboard.Modifiers == ModifierKeys.Shift)
-                {
-                    shift = true;
-                    keybd_event(VK_SHIFT, 0, 2, (UIntPtr)0);
-                }
-                if (System.Windows.Input.Keyboard.Modifiers == ModifierKeys.Alt)
-                {
-                    alt = true;
-                    keybd_event(VK_MENU, 0, 2, (UIntPtr)0);
-                }
+                ctrl = true;
+                keybd_event(VK_CONTROL, 0, 2, (UIntPtr)0);
+            }
+            if (System.Windows.Input.Keyboard.Modifiers == ModifierKeys.Shift)
+            {
+                shift = true;
+                keybd_event(VK_SHIFT, 0, 2, (UIntPtr)0);
+            }
+            if (System.Windows.Input.Keyboard.Modifiers == ModifierKeys.Alt)
+            {
+                alt = true;
+                keybd_event(VK_MENU, 0, 2, (UIntPtr)0);
             }
             foreach (int cd in Code)
             {
@@ -1219,19 +1463,87 @@ namespace nFrickBoard
                     keybd_event((byte)-cd, 0, 2, (UIntPtr)0);
                 }
             }
-            if (ModFlg == false)
+            if (ctrl == true)
             {
-                if (ctrl == true)
+                keybd_event(VK_CONTROL, 0, 0, (UIntPtr)0);
+            }
+            if (shift == true)
+            {
+                keybd_event(VK_SHIFT, 0, 0, (UIntPtr)0);
+            }
+            if (alt == true)
+            {
+                keybd_event(VK_MENU, 0, 0, (UIntPtr)0);
+            }
+        }
+        //修飾キー用
+        public void SendModkey(int[] Code)
+        {
+            foreach (int cd in Code)
+            {
+                int sendcd = 0;
+                if (cd > 0)
                 {
-                    keybd_event(VK_CONTROL, 0, 0, (UIntPtr)0);
+                    //プラス値が入力された場合、個別の修飾キーとみなす
+                    switch (cd)
+                    {
+                        //各キーの押下状態を反転するようにコード値を設定
+                        case VK_CONTROL:
+                            if (System.Windows.Input.Keyboard.Modifiers == ModifierKeys.Control)
+                            {
+                                sendcd = -cd;
+                            }
+                            else
+                            {
+                                sendcd = cd;
+                            }
+                            break;
+                        case VK_SHIFT:
+                            if (System.Windows.Input.Keyboard.Modifiers == ModifierKeys.Shift)
+                            {
+                                sendcd = -cd;
+                            }
+                            else
+                            {
+                                sendcd = cd;
+                            }
+                            break;
+                        case VK_MENU:
+                            if (System.Windows.Input.Keyboard.Modifiers == ModifierKeys.Alt)
+                            {
+                                sendcd = -cd;
+                            }
+                            else
+                            {
+                                sendcd = cd;
+                            }
+                            break;
+                        default: //修飾キー以外はスペースとみなす
+                            if (Keyboard.IsKeyDown(Key.Space))
+                            {
+                                sendcd = -cd;
+                            }
+                            else
+                            {
+                                sendcd = cd;
+                            }
+                            break;
+                    }
                 }
-                if (shift == true)
+                else
                 {
-                    keybd_event(VK_SHIFT, 0, 0, (UIntPtr)0);
+                    //マイナス値が入力された場合リセットとみなす
+                    sendcd = cd;
                 }
-                if (alt == true)
+                if (sendcd > 0)
                 {
-                    keybd_event(VK_MENU, 0, 0, (UIntPtr)0);
+                    //正ならキーダウン
+                    keybd_event((byte)sendcd, 0, 0, (UIntPtr)0);
+                }
+                else
+                {
+                    //負ならキーアップ
+                    keybd_event((byte)-sendcd, 0, 2, (UIntPtr)0);
                 }
             }
         }
