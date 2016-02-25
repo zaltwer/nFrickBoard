@@ -101,6 +101,11 @@ namespace nFrickBoard.Properties {
   <string>乾燥</string>
   <string>下のレイヤーと結合</string>
   <string>レイヤーを複製</string>
+  <string>リセット</string>
+  <string>Ctrl</string>
+  <string>Shift</string>
+  <string>Alt</string>
+  <string>Space</string>
 </ArrayOfString>")]
         public global::System.Collections.Specialized.StringCollection KeyStr {
             get {
@@ -328,7 +333,7 @@ namespace nFrickBoard.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>リセット</string>
+  <string>全て離す</string>
   <string>Ctrl</string>
   <string>Shift</string>
   <string>Alt</string>
@@ -393,6 +398,11 @@ namespace nFrickBoard.Properties {
   <string>1362</string>
   <string>1284</string>
   <string>1282</string>
+  <string />
+  <string>Ctrl</string>
+  <string>Shift</string>
+  <string>Alt</string>
+  <string>Space</string>
 </ArrayOfString>")]
         public global::System.Collections.Specialized.StringCollection KeyCDNP {
             get {
@@ -451,7 +461,7 @@ b.n59=0|b.n6=0|b.n60=1.29062024949075E-306|b.n61=4.24391670529379E-314|b.n8=通�
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int PadCnt {
             get {
                 return ((int)(this["PadCnt"]));

@@ -54,8 +54,6 @@ namespace nFrickBoard
                 System.Windows.Application.Current.Shutdown();
 #endif
 
-//            UserSettings.Instance.ID = ButtonArray[0].ID;
-//            UserSettings.Instance.KeyAssign = ButtonArray[0].KeyAssign;
             UserSettings.SaveSetting();
             this.Close();
         }
