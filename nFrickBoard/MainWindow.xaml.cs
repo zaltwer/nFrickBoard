@@ -167,6 +167,11 @@ namespace nFrickBoard
                 //0の場合デフォルト値を取得
                 UserSettings.Instance.FrickCancel = Properties.Settings.Default.FrickCancel;
             }
+            if (UserSettings.Instance.ObjSize == 0)
+            {
+                //0の場合デフォルト値を取得
+                UserSettings.Instance.ObjSize = Properties.Settings.Default.ObjSize;
+            }
             //ボタン数・ホイールパッド数取得
             if (UserSettings.Instance.ButtonCnt == 0 && UserSettings.Instance.PadCnt == 0)
             {
@@ -206,36 +211,27 @@ namespace nFrickBoard
                         UserSettings.Instance.Button[i].kind = Constants.BTN_NORMAL;  //ボタン種類を通常に設定
                     }
                     //ボタン座標を設定
-                    UserSettings.Instance.Button[i].X = X * Constants.ButtonSize;
-                    UserSettings.Instance.Button[i].Y = Y * Constants.ButtonSize;
+                    UserSettings.Instance.Button[i].X = X * UserSettings.Instance.ObjSize * 2;
+                    UserSettings.Instance.Button[i].Y = Y * UserSettings.Instance.ObjSize * 2;
                     X++;
                 }
                 #endregion
                 #region ホイール設定のデフォルト値を取得
                 //ホイール数分ユーザー設定に配列確保
                 UserSettings.Instance.Pad = new UserButton[UserSettings.Instance.PadCnt];
-                for (int i = 0; i < UserSettings.Instance.ButtonCnt; i++)
+                for (int i = 0; i < UserSettings.Instance.PadCnt; i++)
                 {
-                    UserSettings.Instance.Button[i] = new UserButton();
-                    UserSettings.Instance.Button[i].BtnTxt = Properties.Settings.Default.BtnTXT[i];
-                    UserSettings.Instance.Button[i].ID = i;
+                    UserSettings.Instance.Pad[i] = new UserButton();
+                    UserSettings.Instance.Pad[i].BtnTxt = Properties.Settings.Default.BtnTXT[i];
+                    UserSettings.Instance.Pad[i].ID = i;
                     for (int j = 0; j < (Constants.FRICK_WAY + 1); j++)
                     {
-                        UserSettings.Instance.Button[i].KeyText[j] = Properties.Settings.Default.KeyStr[i * (Constants.FRICK_WAY + 1) + j];
-                        UserSettings.Instance.Button[i].KeyAssign[j] = Properties.Settings.Default.KeyCDNP[i * (Constants.FRICK_WAY + 1) + j];
-                    }
-                    //最後の一件は修飾キー用ボタン
-                    if (i == UserSettings.Instance.ButtonCnt - 1)
-                    {
-                        UserSettings.Instance.Button[i].kind = Constants.BTN_MOD;  //ボタン種類を修飾キーに設定
-                    }
-                    else
-                    {
-                        UserSettings.Instance.Button[i].kind = Constants.BTN_NORMAL;  //ボタン種類を通常に設定
+                        UserSettings.Instance.Pad[i].KeyText[j] = Properties.Settings.Default.padStr[i * (Constants.FRICK_WAY + 1) + j];
+//                        UserSettings.Instance.Pad[i].KeyAssign[j] = Properties.Settings.Default.padCDNP[i * (Constants.FRICK_WAY + 1) + j];
                     }
                     //ボタン座標を設定
-                    UserSettings.Instance.Button[i].X = X * Constants.ButtonSize;
-                    UserSettings.Instance.Button[i].Y = Y * Constants.ButtonSize;
+                    UserSettings.Instance.Pad[i].X = X * UserSettings.Instance.ObjSize * 2;
+                    UserSettings.Instance.Pad[i].Y = Y * UserSettings.Instance.ObjSize * 2;
                     X++;
                 }
                 #endregion
@@ -259,6 +255,16 @@ namespace nFrickBoard
                 ButtonArray[i] = new FrickButton();
                 FrickGrid.Children.Add(ButtonArray[i]);
                 ButtonArray[i].Margin = new Thickness(UserSettings.Instance.Button[i].X, UserSettings.Instance.Button[i].Y, 0, 0);
+                //                ButtonArray[i].BtnGrid.Height = 32;
+                //                ButtonArray[i].Height = 128;
+                //サイズ設定(縦横ともに基本サイズの2倍)
+#if false
+                ButtonArray[i].BtnImg.Height = UserSettings.Instance.ObjSize * 2;
+                ButtonArray[i].BtnImg.Width = UserSettings.Instance.ObjSize * 2;
+                ButtonArray[i].BtnTxt.Height = UserSettings.Instance.ObjSize * 2;
+                ButtonArray[i].BtnTxt.Width = UserSettings.Instance.ObjSize * 2;
+#endif
+                ButtonArray[i].BtnGrid.Resources["ObjSize"] = (double)32;
                 //イベント設定
                 ButtonArray[i].StylusDown += FrickButton_StylusDown;
                 ButtonArray[i].MouseMove += FrickButton_MouseMove;

@@ -492,7 +492,10 @@ b.n59=0|b.n6=0|b.n60=1.29062024949075E-306|b.n61=4.24391670529379E-314|b.n8=é€šå
 </Value>
     </Setting>
     <Setting Name="PadCnt" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">2</Value>
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="ObjSize" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">32</Value>
     </Setting>
   </Settings>
 </SettingsFile>

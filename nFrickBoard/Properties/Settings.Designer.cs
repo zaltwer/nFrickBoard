@@ -461,10 +461,19 @@ b.n59=0|b.n6=0|b.n60=1.29062024949075E-306|b.n61=4.24391670529379E-314|b.n8=é€šå
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public int PadCnt {
             get {
                 return ((int)(this["PadCnt"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("32")]
+        public int ObjSize {
+            get {
+                return ((int)(this["ObjSize"]));
             }
         }
     }

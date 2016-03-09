@@ -29,7 +29,7 @@ namespace nFrickBoard
         {
             InitializeComponent();
             KeyAsignR = new int[5][];
-            sens = new double[5] { 0.005, 0.05, 0.05, 0.05, 0.05 };
+            sens = new double[5] { 0.05, 0.05, 0.05, 0.05, 0.05 };
             PadBtn.ParentPad = this;
             FuncID = 0;
         }
