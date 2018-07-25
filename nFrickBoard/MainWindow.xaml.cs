@@ -60,7 +60,7 @@ namespace nFrickBoard
         private double PadPointY;
         private bool PadActivate = false;
 
-        //フリック時に表示するポップアップ用画像設定
+        //フリック時に表示するポップアップ用背景画像設定
         BitmapImage PopImageC = new BitmapImage(new Uri("Resources/maskb.png", UriKind.RelativeOrAbsolute));
         BitmapImage PopImageU = new BitmapImage(new Uri("Resources/maskU.png", UriKind.RelativeOrAbsolute));
         BitmapImage PopImageD = new BitmapImage(new Uri("Resources/maskD.png", UriKind.RelativeOrAbsolute));
@@ -264,7 +264,8 @@ namespace nFrickBoard
                 ButtonArray[i].BtnTxt.Height = UserSettings.Instance.ObjSize * 2;
                 ButtonArray[i].BtnTxt.Width = UserSettings.Instance.ObjSize * 2;
 #endif
-                ButtonArray[i].BtnGrid.Resources["ObjSize"] = (double)32;
+                ButtonArray[i].BtnGrid.Resources["ObjSize"] = (double)UserSettings.Instance.ObjSize;
+                ButtonArray[i].BtnGrid.Resources["ObjSize3"] = (double)UserSettings.Instance.ObjSize * 3;
                 //イベント設定
                 ButtonArray[i].StylusDown += FrickButton_StylusDown;
                 ButtonArray[i].MouseMove += FrickButton_MouseMove;
@@ -1082,7 +1083,7 @@ namespace nFrickBoard
         {
             for (int i = 0; i < UserKey.ButtonCnt; i++) //ボタン数ループ
             {
-                //ボタン種別の判定
+                //ボタン種別（通常or修飾キー）の判定
                 if (UserKey.Button[i].kind == Constants.BTN_NORMAL)
                 {
                     //通常ボタンの場合

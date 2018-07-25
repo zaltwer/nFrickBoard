@@ -10,17 +10,18 @@
     <Grid x:Name="BtnGrid" VerticalAlignment="Top" HorizontalAlignment="Left">
         <Grid.Resources>
             <sys:Double x:Key="ObjSize">64</sys:Double>
+            <sys:Double x:Key="ObjSize3">192</sys:Double>
             <Style x:Key="ButtonStyle" TargetType="Image">
                 <Setter Property="Source" Value="Resources/Button01.bmp" />
                 <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
                 <Setter Property="Height" Value="{DynamicResource ObjSize}"  />
-                <Setter Property="Width" Value="64" />
+                <Setter Property="Width" Value="{DynamicResource ObjSize}" />
                 <Setter Property="HorizontalAlignment" Value="Left" />
                 <Setter Property="VerticalAlignment" Value="Top" />
             </Style>
             <Style x:Key="ButtonTextStyle" TargetType="TextBox">
-                <Setter Property="Height" Value="64" />
-                <Setter Property="Width" Value="64" />
+                <Setter Property="Height" Value="{DynamicResource ObjSize}" />
+                <Setter Property="Width" Value="{DynamicResource ObjSize}" />
                 <Setter Property="TextAlignment" Value="Center" />
                 <Setter Property="TextWrapping" Value="Wrap" />
                 <Setter Property="IsHitTestVisible" Value="False" />
@@ -33,8 +34,8 @@
                 <Setter Property="VerticalContentAlignment" Value="Center" />
             </Style>
             <Style x:Key="PopTextStyle" TargetType="TextBox">
-                <Setter Property="Height" Value="64" />
-                <Setter Property="Width" Value="64" />
+                <Setter Property="Height" Value="{DynamicResource ObjSize}" />
+                <Setter Property="Width" Value="{DynamicResource ObjSize}" />
                 <Setter Property="TextAlignment" Value="Center" />
                 <Setter Property="TextWrapping" Value="Wrap" />
                 <Setter Property="IsHitTestVisible" Value="False" />
@@ -51,17 +52,17 @@
                 <Setter Property="BorderBrush" Value="#FFDCDEE4" />
             </Style>
         </Grid.Resources>
-        <Popup x:Name="FrickPop" IsOpen="False" Height="192" Width="192"  Placement="Relative"
-            VerticalOffset="-96" HorizontalOffset="0"
+        <Popup x:Name="FrickPop" IsOpen="False" Height="{DynamicResource ObjSize3}" Width="{DynamicResource ObjSize3}"  Placement="MousePoint"
+            VerticalOffset="0" HorizontalOffset="0"
 			AllowsTransparency ="true" IsHitTestVisible="False">
             <Canvas x:Name="PopCanvas">
-                <TextBox x:Name="PopTextC" Style="{StaticResource PopTextStyle}" Margin="64,64,0,0" Initialized="PopText_Initialized" />
-                <TextBox x:Name="PopTextU" Style="{StaticResource PopTextStyle}" Margin="64,0,0,0" Initialized="PopText_Initialized" />
-                <TextBox x:Name="PopTextD" Style="{StaticResource PopTextStyle}" Margin="64,128,0,0" Initialized="PopText_Initialized" />
-                <TextBox x:Name="PopTextL" Style="{StaticResource PopTextStyle}" Margin="0,64,0,0" Initialized="PopText_Initialized"  />
-                <TextBox x:Name="PopTextR" Style="{StaticResource PopTextStyle}" Margin="128,64,0,0" Initialized="PopText_Initialized" />
+                <TextBox x:Name="PopTextC" Style="{StaticResource PopTextStyle}" Initialized="PopText_Initialized" Canvas.Top="{DynamicResource ObjSize}" Canvas.Left="{DynamicResource ObjSize}" />
+                <TextBox x:Name="PopTextU" Style="{StaticResource PopTextStyle}" Initialized="PopText_Initialized" Canvas.Left="{DynamicResource ObjSize}" Canvas.Top="0" />
+                <TextBox x:Name="PopTextD" Style="{StaticResource PopTextStyle}" Initialized="PopText_Initialized" Canvas.Left="{DynamicResource ObjSize}" Canvas.Bottom="0" />
+                <TextBox x:Name="PopTextL" Style="{StaticResource PopTextStyle}" Initialized="PopText_Initialized" Canvas.Left="0" Canvas.Top="{DynamicResource ObjSize}" />
+                <TextBox x:Name="PopTextR" Style="{StaticResource PopTextStyle}" Initialized="PopText_Initialized" Canvas.Right="0" Canvas.Top="{DynamicResource ObjSize}" />
                 <Image x:Name="FrickPopImage"
-				    Source="Resources/maskB.png" IsHitTestVisible="False" Opacity="0.5" Width="192"/>
+				    Source="Resources/maskB.png" IsHitTestVisible="False" Opacity="0.5" Width="{DynamicResource ObjSize3}" Height="{DynamicResource ObjSize3}"/>
             </Canvas>
         </Popup>
         <Image
