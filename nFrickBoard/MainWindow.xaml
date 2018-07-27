@@ -1,0 +1,51 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:nFrickBoard" x:Name="nFrick" x:Class="nFrickBoard.MainWindow"
+        Title="nFrickBoard" Height="128" Width="352"
+        Topmost="True" ResizeMode="CanMinimize" Focusable="False" WindowStartupLocation="CenterScreen"
+        Stylus.IsPressAndHoldEnabled="false"
+        VerticalAlignment="Top" HorizontalAlignment="Center" HorizontalContentAlignment="Center" MouseLeftButtonDown="nFrick_MouseLeftButtonDown" ScrollViewer.VerticalScrollBarVisibility="Disabled" WindowStyle="None" AllowsTransparency="True" BorderThickness="0" Background="{x:Null}" >
+    <Window.BorderBrush>
+        <SolidColorBrush Color="Black" Opacity="0.3"/>
+    </Window.BorderBrush>
+    <Grid x:Name="BaseGrid">
+        <Grid x:Name="FrickGrid" VerticalAlignment="Top" Margin="32,0,0,0" HorizontalAlignment="Left"/>
+        <Rectangle x:Name="_base2" HorizontalAlignment="Left" Height="128" VerticalAlignment="Top" Width="32" IsHitTestVisible="False" Cursor="SizeAll" Visibility="Hidden" >
+            <Rectangle.Fill>
+                <SolidColorBrush Color="White"/>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Button x:Name="close" Content="Resources/close.bmp" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Height="32" Click="close_Click" FontSize="16" FontWeight="ExtraBold" Margin="0" Background="White">
+            <Button.ContentTemplate>
+                <DataTemplate>
+                    <Image Source="{Binding}"/>
+                </DataTemplate>
+            </Button.ContentTemplate>
+            <Button.BorderBrush>
+                <SolidColorBrush Color="#FFADB2B5"/>
+            </Button.BorderBrush>
+        </Button>
+        <Button x:Name="min" Content="Resources/min.bmp" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Height="32" Click="min_Click" FontSize="16" FontWeight="ExtraBold" Margin="0,32,0,0" Background="White">
+            <Button.ContentTemplate>
+                <DataTemplate>
+                    <Image Source="{Binding}"/>
+                </DataTemplate>
+            </Button.ContentTemplate>
+            <Button.BorderBrush>
+                <SolidColorBrush Color="#FFADB2B5"/>
+            </Button.BorderBrush>
+        </Button>
+        <Button x:Name="setting" Content="Resources/setting.bmp" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Height="32" Click="setting_Click" FontSize="16" FontWeight="ExtraBold" Margin="0,64,0,0" Background="White">
+            <Button.ContentTemplate>
+                <DataTemplate>
+                    <Image Source="{Binding}"/>
+                </DataTemplate>
+            </Button.ContentTemplate>
+            <Button.BorderBrush>
+                <SolidColorBrush Color="#FFADB2B5"/>
+            </Button.BorderBrush>
+        </Button>
+        <Image Source="Resources/move.bmp" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Height="32" Margin="0,96,0,0" IsHitTestVisible="True" Cursor="SizeAll"/>
+    </Grid>
+</Window>

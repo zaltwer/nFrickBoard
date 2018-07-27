@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="nFrickBoard.FrickButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:nFrickBoard"
+             mc:Ignorable="d" 
+             d:DesignHeight="64" d:DesignWidth="64">
+    <Grid x:Name="BtnGrid" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <Grid.Resources>
+            <sys:Double x:Key="ObjSize">64</sys:Double>
+            <sys:Double x:Key="ObjSize3">192</sys:Double>
+            <Style x:Key="ButtonStyle" TargetType="Image">
+                <Setter Property="Source" Value="Resources/Button01.bmp" />
+                <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
+                <Setter Property="Height" Value="{DynamicResource ObjSize}"  />
+                <Setter Property="Width" Value="{DynamicResource ObjSize}" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+                <Setter Property="VerticalAlignment" Value="Top" />
+            </Style>
+            <Style x:Key="ButtonTextStyle" TargetType="TextBox">
+                <Setter Property="Height" Value="{DynamicResource ObjSize}" />
+                <Setter Property="Width" Value="{DynamicResource ObjSize}" />
+                <Setter Property="TextAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="IsHitTestVisible" Value="False" />
+                <Setter Property="Background" Value ="{x:Null}"/>
+                <Setter Property="Focusable" Value="False" />
+                <Setter Property="FontWeight" Value="ExtraBold" />
+                <Setter Property="Foreground" Value="#FF554F4F" />
+                <Setter Property="HorizontalAlignment" Value="left" />
+                <Setter Property="VerticalAlignment" Value="Top" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="PopTextStyle" TargetType="TextBox">
+                <Setter Property="Height" Value="{DynamicResource ObjSize}" />
+                <Setter Property="Width" Value="{DynamicResource ObjSize}" />
+                <Setter Property="TextAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="IsHitTestVisible" Value="False" />
+                <Setter Property="Background" >
+                    <Setter.Value>
+                        <ImageBrush Stretch="Uniform" ImageSource="Resources/NoAssign.png"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Text" Value="" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="#FFDCDEE4" />
+            </Style>
+        </Grid.Resources>
+        <Popup x:Name="FrickPop" IsOpen="False" Height="{DynamicResource ObjSize3}" Width="{DynamicResource ObjSize3}"  Placement="MousePoint"
+            VerticalOffset="0" HorizontalOffset="0"
+			AllowsTransparency ="true" IsHitTestVisible="False">
+            <Canvas x:Name="PopCanvas">
+                <TextBox x:Name="PopTextC" Style="{StaticResource PopTextStyle}" Initialized="PopText_Initialized" Canvas.Top="{DynamicResource ObjSize}" Canvas.Left="{DynamicResource ObjSize}" />
+                <TextBox x:Name="PopTextU" Style="{StaticResource PopTextStyle}" Initialized="PopText_Initialized" Canvas.Left="{DynamicResource ObjSize}" Canvas.Top="0" />
+                <TextBox x:Name="PopTextD" Style="{StaticResource PopTextStyle}" Initialized="PopText_Initialized" Canvas.Left="{DynamicResource ObjSize}" Canvas.Bottom="0" />
+                <TextBox x:Name="PopTextL" Style="{StaticResource PopTextStyle}" Initialized="PopText_Initialized" Canvas.Left="0" Canvas.Top="{DynamicResource ObjSize}" />
+                <TextBox x:Name="PopTextR" Style="{StaticResource PopTextStyle}" Initialized="PopText_Initialized" Canvas.Right="0" Canvas.Top="{DynamicResource ObjSize}" />
+                <Image x:Name="FrickPopImage"
+				    Source="Resources/maskB.png" IsHitTestVisible="False" Opacity="0.5" Width="{DynamicResource ObjSize3}" Height="{DynamicResource ObjSize3}"/>
+            </Canvas>
+        </Popup>
+        <Image
+            x:Name="BtnImg" 
+            Style="{StaticResource ButtonStyle}" Opacity="0.5" Stretch="Fill"
+        />
+        <TextBox x:Name="BtnTxt" Text="編集"
+            Style="{StaticResource ButtonTextStyle}" BorderThickness="1" Foreground="#FF2C2C2C" 
+        >
+            <TextBox.BorderBrush>
+                <SolidColorBrush Color="Black" Opacity="0.3"/>
+            </TextBox.BorderBrush>
+        </TextBox>
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,141 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:nFrickBoard" x:Name="nFrick" x:Class="nFrickBoard.MainWindow"
+        Title="nFrickBoard" Height="135.334" Width="521.333"
+        Topmost="True" ResizeMode="NoResize" Focusable="False" WindowStartupLocation="Manual"
+        Stylus.IsPressAndHoldEnabled="false"
+        VerticalAlignment="Top" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Background="#00000000" MouseLeftButtonDown="nFrick_MouseLeftButtonDown" ScrollViewer.VerticalScrollBarVisibility="Disabled" WindowStyle="None" AllowsTransparency="True" >
+    <Window.Resources>
+        <EllipseGeometry x:Key="ButtonClip"
+              RadiusX="32"
+              RadiusY="32"
+              Center="32,32"/>
+        <EllipseGeometry x:Key="TextClip"
+              RadiusX="30"
+              RadiusY="30"
+              Center="32,32"/>
+        <Style x:Key="ButtonStyle" TargetType="Image">
+            <Setter Property="Source" Value="Resources/btn045_09.png" />
+            <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
+            <Setter Property="Clip" Value="{StaticResource ButtonClip}" />
+            <Setter Property="Height" Value="64" />
+            <Setter Property="Width" Value="64" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+        </Style>
+        <Style x:Key="ButtonStyleEvent" TargetType="Image" BasedOn= "{StaticResource ButtonStyle}">
+            <EventSetter Event="Loaded" Handler="ButtonFake_Loaded"/>
+            <EventSetter Event="MouseUp" Handler="ButtonFake_MouseUp"/>
+            <EventSetter Event="MouseMove" Handler="ButtonFake_MouseMove"/>
+            <EventSetter Event="StylusDown" Handler="ButtonFake_StylusDown"/>
+        </Style>
+        <Style x:Key="ButtonTextStyle" TargetType="TextBox">
+            <Setter Property="Clip" Value="{StaticResource TextClip}" />
+            <Setter Property="Height" Value="64" />
+            <Setter Property="Width" Value="64" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Setter Property="IsHitTestVisible" Value="False" />
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="FontWeight" Value="ExtraBold" />
+            <Setter Property="Foreground" Value="#FF554F4F" />
+            <Setter Property="HorizontalAlignment" Value="left" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+    <Grid Height="80" VerticalAlignment="Bottom">
+        <Image x:Name="BG" HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="400" Source="Resources/BG01.png" IsHitTestVisible="False" Stretch="None"/>
+        <Image
+            x:Name="ButtonFake01" 
+            Style="{StaticResource ButtonStyleEvent}"
+            Margin="328,8,0,0"
+        />
+        <Image
+            x:Name="ButtonFake02"
+            Style="{StaticResource ButtonStyleEvent}"
+            Margin="264,8,0,0"
+        />
+        <Image
+            x:Name="ButtonFake03"
+            Style="{StaticResource ButtonStyleEvent}"
+            Margin="200,8,0,0"
+        />
+        <Image
+            x:Name="ButtonFake04"
+            Style="{StaticResource ButtonStyleEvent}"
+            Margin="136,8,0,0"
+        />
+        <Image
+            x:Name="ButtonFake05"
+            Style="{StaticResource ButtonStyleEvent}"
+            Margin="72,8,0,0"
+        />
+        <Image 
+            x:Name="Pad01"
+            HorizontalAlignment="Left" Height="128" Margin="392,-56,0,8" VerticalAlignment="Bottom" Width="128"
+            Source="Resources/pad01.png"
+			Stylus.IsPressAndHoldEnabled="false"
+            MouseUp="Pad01_MouseUp"
+            MouseMove="Pad01_MouseMove"
+            StylusDown="Pad01_StylusDown"
+            />
+        <Image
+            x:Name="ButtonFakePad01" 
+            Style="{StaticResource ButtonStyle}"
+            Margin="424,-24,0,0"
+            MouseUp="ButtonFakePad01_MouseUp"
+            MouseMove="ButtonFake_MouseMove"
+            StylusDown="ButtonFakePad_StylusDown"
+        />
+        <TextBox x:Name="Text01" Text="編集" Margin="328,8,0,8"
+            Style="{StaticResource ButtonTextStyle}"
+        />
+        <TextBox x:Name="Text02" Text="ツール" Margin="264,8,0,8"
+            Style="{StaticResource ButtonTextStyle}"
+        />
+        <TextBox x:Name="Text03" Text="表示" Margin="200,8,0,8"
+            Style="{StaticResource ButtonTextStyle}"
+        />
+        <TextBox x:Name="Text04" Text="選択" Margin="136,8,0,8"
+            Style="{StaticResource ButtonTextStyle}"
+        />
+        <TextBox x:Name="Text05" Text="レイヤー" Margin="72,8,0,8"
+            Style="{StaticResource ButtonTextStyle}"
+        />
+        <TextBox x:Name="Text06" Text="ホイール" Margin="424,-24,0,40"
+            Style="{StaticResource ButtonTextStyle}"
+        />
+        <Popup x:Name="FrickPop" IsOpen="False" Height="192" Width="192"  Placement="Top"
+            VerticalOffset="0" HorizontalOffset="0"
+			AllowsTransparency ="true" IsHitTestVisible="False">
+            <Canvas x:Name="PopCanvas">
+                <TextBox x:Name="PopTextC" Text=""  HorizontalContentAlignment="Center" Margin="64,64,0,0" Height="64" HorizontalScrollBarVisibility="Disabled" MaxWidth="64" MaxHeight="64" MinWidth="64" MinHeight="64" TextAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap" BorderThickness="1" BorderBrush="#FFDCDEE4" />
+                <TextBox x:Name="PopTextU" Text=""  HorizontalContentAlignment="Center" Margin="64,0,0,0" Height="64" HorizontalScrollBarVisibility="Disabled" MaxWidth="64" MaxHeight="64" MinWidth="64" MinHeight="64" TextAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap" BorderThickness="1" BorderBrush="#FFDCDEE4"  />
+                <TextBox x:Name="PopTextD" Text=""  HorizontalContentAlignment="Center" Margin="64,128,0,0" Height="64" HorizontalScrollBarVisibility="Disabled" MaxWidth="64" MaxHeight="64" MinWidth="64" MinHeight="64" TextAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap"  BorderThickness="1" BorderBrush="#FFDCDEE4" />
+                <TextBox x:Name="PopTextL" Text=""  HorizontalContentAlignment="Center" Margin="0,64,0,0" Height="64" HorizontalScrollBarVisibility="Disabled" MaxWidth="64" MaxHeight="64" MinWidth="64" MinHeight="64" TextAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap" BorderThickness="1" BorderBrush="#FFDCDEE4"  />
+                <TextBox x:Name="PopTextR" Text=""  HorizontalContentAlignment="Center" Margin="128,64,0,0" Height="64" HorizontalScrollBarVisibility="Disabled" MaxWidth="64" MaxHeight="64" MinWidth="64" MinHeight="64" TextAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap"  BorderThickness="1" BorderBrush="#FFDCDEE4" />
+                <Image x:Name="FrickPopImage"
+				    Source="Resources/maskB.png" IsHitTestVisible="False" Opacity="0.5" Width="192"/>
+            </Canvas>
+        </Popup>
+        <Image x:Name="close" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="32" Source="Resources/close01.png" MouseDown="close_MouseDown" Margin="33,8,0,0">
+            <Image.Clip>
+                <EllipseGeometry
+                  RadiusX="16"
+                  RadiusY="16"
+                  Center="16,16"/>
+            </Image.Clip>
+        </Image>
+        <Image x:Name="setting" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="32" Source="Resources/set.png" MouseDown="close_MouseDown" Margin="33,40,0,0">
+            <Image.Clip>
+                <EllipseGeometry
+                  RadiusX="16"
+                  RadiusY="16"
+                  Center="16,16"/>
+            </Image.Clip>
+        </Image>
+    </Grid>
+</Window>
